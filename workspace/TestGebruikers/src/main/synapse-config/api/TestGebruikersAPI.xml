@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<api context="/test" name="TestGebruikersAPI" xmlns="http://ws.apache.org/ns/synapse">
+    <resource methods="GET">
+        <inSequence>
+            <log level="full" separator=";"/>
+            <send>
+                <endpoint>
+                    <http method="get" uri-template="http://r90rl26x:8280/services/test.HTTPEndpoint/gebruikers"/>
+                </endpoint>
+            </send>
+        </inSequence>
+        <outSequence>
+            <log description="alles" level="full"/>
+            <log level="custom" separator=";">
+                <property expression="/soapenv:Envelope/soapenv:Body" name="test" xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"/>
+            </log>
+            <respond description="test"/>
+        </outSequence>
+        <faultSequence/>
+    </resource>
+</api>
