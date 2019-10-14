@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proxy name="SavePayloadService" startOnLoad="true" transports="http https" xmlns="http://ws.apache.org/ns/synapse">
+    <target>
+        <inSequence>
+            <log description="Log Request Payload" level="full"/>
+            <payloadFactory description="a" media-type="xml">
+                <format>
+                    <p:InsertPayloadOP xmlns:p="http://ws.wso2.org/dataservice">
+                        <xs:in_payload xmlns:xs="http://ws.wso2.org/dataservice">$1</xs:in_payload>
+                    </p:InsertPayloadOP>
+                </format>
+                <args>
+                    <arg evaluator="xml" expression=" $body//."/>
+                </args>
+            </payloadFactory>
+            <log description="payload to orcale" level="full" separator=","/>
+            <call>
+                <endpoint>
+                    <http method="post" uri-template="http://r90rl26x:8280/services/SavePayload.SOAP11Endpoint"/>
+                </endpoint>
+            </call>
+            <respond description="Send result to the client"/>
+        </inSequence>
+        <outSequence/>
+        <faultSequence/>
+    </target>
+</proxy>
